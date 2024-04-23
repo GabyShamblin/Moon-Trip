@@ -8,4 +8,5 @@ Engaging systems.
 
 [Something about fixing something in the ship to make it more interactable]
 
+[After fixing, push button]
 Beginning landing sequence.
