@@ -58,6 +58,8 @@ public class ScriptedEvents : MonoBehaviour
     public void openDoors() {
         if (doors != null) {
             doors.Play("OpenDoors");
+        } else {
+            Debug.LogError("Doors not assigned");
         }
     }
 }
