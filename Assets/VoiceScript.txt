@@ -1,0 +1,11 @@
+Hello, and welcome to the Crescent Space Training Simulation. Please press the red button on your right to start takeoff.
+
+[Press button]
+10. 9. 8. 7. 6. 5. 4. 3. 2. 1. Liftoff
+
+[In space, wait 2 secs, turn lights on (scattered)]
+Engaging systems.
+
+[Something about fixing something in the ship to make it more interactable]
+
+Beginning landing sequence.
