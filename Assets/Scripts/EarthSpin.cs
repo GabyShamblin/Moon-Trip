@@ -8,6 +8,8 @@ public class EarthSpin : MonoBehaviour
     [SerializeField] private float spinSpeed = -1f;
 
     void Update() {
-        transform.Rotate(0f, spinSpeed, 0f, Space.Self);
+        if (Globals.earthSpin) {
+            transform.Rotate(0f, spinSpeed, 0f, Space.Self);
+        }
     }
 }
