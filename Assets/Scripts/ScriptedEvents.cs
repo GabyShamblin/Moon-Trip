@@ -10,6 +10,7 @@ public class ScriptedEvents : MonoBehaviour
     [Header("Skybox Transition")]
     public Material skybox;
     public ParticleSystem zoom;
+    public AudioSource rocket;
     public bool blendStart = false;
     public float blendTime = 5f;
     public float blend = 0f;
@@ -27,6 +28,9 @@ public class ScriptedEvents : MonoBehaviour
     private float moonStart = -15f;
     private float moonEnd = -3.54f;
 
+    [Header("Narrator")]
+    public Narrator narr;
+
     void Start()
     {
         skybox.SetFloat("_Blend", 0);
@@ -38,6 +42,11 @@ public class ScriptedEvents : MonoBehaviour
     {
         // Skybox blending
         if (blendStart) {
+            // Play rocket sound
+            if (blend <= 0) {
+                rocket.Play();
+            }
+
             // Increase blend
             blend += Time.deltaTime / blendTime;
             skybox.SetFloat("_Blend", blend);
