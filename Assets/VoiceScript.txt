@@ -9,7 +9,17 @@ Hello, and welcome to the Crescent Space Training Simulation. Please press the r
 [In space, wait 2 secs, turn lights on (scattered)]
 Engaging systems.
 
-[Something about fixing something in the ship to make it more interactable]
+[In space, wait 5 secs]
+Press the green button on your right to land.
 
 [After fixing, push button]
 Beginning landing sequence.
+
+---
+
+[Error sound when trying to open door while not on moon]
+[Door opening sound]
+
+[Ducky sound when interacting with duck]
+
+[Metal sound when wrench hits stuff]

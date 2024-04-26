@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class ScriptedEvents : MonoBehaviour
 {
@@ -11,22 +11,19 @@ public class ScriptedEvents : MonoBehaviour
   public Material skybox;
   public ParticleSystem zoom;
   public AudioSource rocket;
+  public DynamicMoveProvider playerMove;
   public bool blendStart = false;
   public float blendTime = 5f;
   public float blend = 0f;
   private float zoomStart = 0.2f;
   private float zoomEnd = 1.5f;
 
-  [Header("Open Doors")]
-  public Animator doors;
-  public bool doorStart = false;
-
   [Header("Landing")]
-  public Transform moon;
+  public GameObject moon;
   public bool landing = false;
-  public float landingTime = 5f;
-  private float moonStart = -15f;
-  private float moonEnd = -3.54f;
+  public float landingTime = 15f;
+  private float moonStart = -100f;
+  private float moonEnd = -6f;
 
   [Header("Narrator")]
   public Narrator narr;
@@ -34,7 +31,7 @@ public class ScriptedEvents : MonoBehaviour
   void Start()
   {
     skybox.SetFloat("_Blend", 0);
-    moon.position = new Vector3(moon.position.x, moonStart, moon.position.z);
+    moon.transform.position = new Vector3(moon.transform.position.x, moonStart, moon.transform.position.z);
     // zoom.Stop();
   }
 
@@ -53,39 +50,49 @@ public class ScriptedEvents : MonoBehaviour
 
       // If zoom is still playing and blend is over, stop
       if (zoom.isPlaying && blend >= zoomEnd) {
-        Debug.Log("Stop zoom");
+        // Debug.Log("Stop zoom");
         zoom.Stop();
         Globals.gravityOff = true;
         Globals.earthSpin = true;
       }
       // If zoom is not playing while blending, start
       else if (!zoom.isPlaying && blend >= zoomStart) {
-        Debug.Log("Play zoom");
+        // Debug.Log("Play zoom");
         zoom.Play();
       }
 
       // Stop blend when it reaches its max
       if (blend >= 2) {
+        playerMove.useGravity = false;
         blendStart = false;
         blend = 0f;
+        Globals.phase = 2;
+        Globals.lights = true;
       }
     }
 
-    // Open ship doors
-    if (doorStart) {
-      OpenDoors();
+    if (Globals.lights) {
+      time += Time.deltaTime;
+      if (time >= 3) {
+        Globals.lights = false;
+      }
     }
 
     // "Landing" - Bring moon surface to ship
     if (landing) {
+      if (time <= 0) {
+        moon.SetActive(true);
+      }
+
       time += Time.deltaTime;
       float newy = (time / landingTime * Math.Abs(moonStart - moonEnd)) + moonStart;
-      moon.position = new Vector3(moon.position.x, newy, moon.position.z);
+      moon.transform.position = new Vector3(moon.transform.position.x, newy, moon.transform.position.z);
       
       if (time >= landingTime) {
-        moon.position = new Vector3(moon.position.x, moonEnd, moon.position.z);
+        moon.transform.position = new Vector3(moon.transform.position.x, moonEnd, moon.transform.position.z);
         time = 0f;
         landing = false;
+        Globals.phase = 3;
       }
     }
   }
@@ -93,15 +100,6 @@ public class ScriptedEvents : MonoBehaviour
   // Start take off
   public void TakeOff() {
     blendStart = true;
-  }
-
-  // Start open door animation
-  public void OpenDoors() {
-    if (doors != null) {
-      doors.Play("OpenDoors");
-    } else {
-      Debug.LogError("Doors not assigned");
-    }
-    doorStart = false;
+    Globals.phase = 1;
   }
 }
