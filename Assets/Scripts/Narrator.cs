@@ -30,7 +30,7 @@ public class Narrator : MonoBehaviour
     }
   }
 
-  void PlaySound() {
+  public void PlaySound() {
     if (soundTimer <= 0 && currAudio < audios.Count) {
       audioSource.PlayOneShot(audios[currAudio]);
       soundTimer = audios[currAudio].length;
