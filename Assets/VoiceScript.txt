@@ -1,7 +1,4 @@
-https://www.naturalreaders.com/online/
-https://www.kapwing.com/6629ad8b84ca7cfcb908bcc7/studio/editor
-
-Hello, and welcome to the Crescent Space Training Simulation. Please press the red button on your right to start takeoff.
+Hello, and welcome to the Virtual Reality Space Training Simulation. Move the red throttle on your left to start takeoff.
 
 [Press button]
 10. 9. 8. 7. 6. 5. 4. 3. 2. 1. Liftoff
@@ -10,10 +7,13 @@ Hello, and welcome to the Crescent Space Training Simulation. Please press the r
 Engaging systems.
 
 [In space, wait 5 secs]
-Press the green button on your right to land.
+Move the green throttle on your right to land.
 
 [After fixing, push button]
 Beginning landing sequence.
+
+[After landed]
+Landing complete. You can explore the moon by using the door in the back of the shuttle.
 
 ---
 

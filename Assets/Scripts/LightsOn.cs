@@ -18,7 +18,7 @@ public class LightsOn : MonoBehaviour
   {
     light = GetComponent<Light>();
     defaultIntensity = light.intensity;
-    light.intensity = 1;
+    light.intensity = 0.5f;
 
     flickerTime = Random.Range(1, 3);
   }
@@ -29,12 +29,12 @@ public class LightsOn : MonoBehaviour
       timer += Time.deltaTime;
       if (timer > delay && timer < flickerTime)
       {
+        // Debug.Log("Toggle " + timer + " " + flickerTime);
         ToggleLight();
       }
     }
 
     if (timer >= flickerTime && !isOn) {
-      Debug.Log("Final toggle");
       ToggleOn();
     }
   }
@@ -45,13 +45,11 @@ public class LightsOn : MonoBehaviour
 
     if (isOn)
     {
-      Debug.Log("Toggle on");
       light.intensity = defaultIntensity;
       delay = Random.Range(0, maxInterval);
     }
     else
     {
-      Debug.Log("Toggle off");
       light.intensity = Random.Range(0.6f, defaultIntensity);
       delay = Random.Range(0, maxFlicker);
     }

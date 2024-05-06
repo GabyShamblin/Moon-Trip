@@ -12,7 +12,6 @@ public class ScriptedEvents : MonoBehaviour
   public Material skybox;
   public ParticleSystem zoom;
   public AudioSource rocket;
-  public DynamicMoveProvider playerMove;
   public bool blendStart = false;
   public float blendTime = 5f;
   public float blend = 0f;
@@ -26,7 +25,7 @@ public class ScriptedEvents : MonoBehaviour
   [Header("Landing")]
   public GameObject moon;
   public bool landing = false;
-  public float landingTime = 15f;
+  public float landingTime = 10f;
   private float moonStart = -100f;
   private float moonEnd = -6f;
 
@@ -34,11 +33,15 @@ public class ScriptedEvents : MonoBehaviour
   public Narrator narrator;
   public AudioSource error;
 
+  [Header("Player")]
+  public DynamicMoveProvider playerMove;
+  public Rigidbody playerRigid;
+
   void Start()
   {
     skybox.SetFloat("_Blend", 0);
 
-    moon.SetActive(false);
+    // moon.SetActive(false);
     moon.transform.position = new Vector3(moon.transform.position.x, moonStart, moon.transform.position.z);
     // zoom.Stop();
   }
@@ -48,9 +51,17 @@ public class ScriptedEvents : MonoBehaviour
     if (waitTime > 0) {
       if (time < waitTime) {
         time += Time.deltaTime;
-      }
-      else if (Globals.phase == 0) {
-        TakeOff();
+      } else {
+        if (Globals.phase == 0 || Globals.phase == 1) {
+          TakeOff();
+        }
+        else if (Globals.phase == 2) {
+          Globals.lights = true; 
+          narrator.PlaySound(2);
+        }
+
+        time = 0;
+        waitTime = 0;
       }
     }
 
@@ -77,10 +88,11 @@ public class ScriptedEvents : MonoBehaviour
       // Stop blend when it reaches its max
       if (blend >= 2) {
         playerMove.useGravity = false;
+        playerMove.enableFly = true;
         blendStart = false;
         blend = 0f;
         Globals.phase = 2;
-        Globals.lights = true;
+        waitTime = 2;
       }
     }
 
@@ -89,35 +101,39 @@ public class ScriptedEvents : MonoBehaviour
       time += Time.deltaTime;
       if (time >= 3) {
         Globals.lights = false;
+        narrator.PlaySound(3); // Play 4Info
       }
     }
 
     // "Landing" - Bring moon surface to ship
     if (landing) {
-      if (time <= 0) {
-        moon.SetActive(true);
-      }
-
       time += Time.deltaTime;
+      Debug.Log("Timer: " + time);
       float newy = (time / landingTime * Math.Abs(moonStart - moonEnd)) + moonStart;
       moon.transform.position = new Vector3(moon.transform.position.x, newy, moon.transform.position.z);
       
       if (time >= landingTime) {
+        playerMove.enableFly = false;
+        playerMove.useGravity = true;
+        playerRigid.mass = 0.5f;
         rightThrottle.ThrottleOff();
         moon.transform.position = new Vector3(moon.transform.position.x, moonEnd, moon.transform.position.z);
         time = 0f;
         landing = false;
         Globals.phase = 3;
+        narrator.PlaySound(5); // Play 6Landed
       }
     }
   }
 
-  // Wait 11s before take off
+  // Interact with red throttle
+  // Wait 9s before take off
   public void PreTakeOff() {
-    if (Globals.phase == 0) {
+    if (Globals.phase == 0 || narrator.soundTimer <= 0) {
       leftThrottle.ThrottleOn();
-      narrator.PlaySound();
-      waitTime = 11;
+      narrator.PlaySound(1); // Play 2Takeoff
+      waitTime = 9;
+      Globals.phase = 1;
     } else {
       error.Play();
     }
@@ -127,16 +143,16 @@ public class ScriptedEvents : MonoBehaviour
   public void TakeOff() {
     blendStart = true;
     rocket.Play();
-    Globals.phase = 1;
-    waitTime = 0;
   }
 
   // Start landing sequence
   public void Land() {
-    if (Globals.phase <= 2) {
+    if (Globals.phase == 2 || narrator.soundTimer <= 0) {
+      moon.SetActive(true);
       rightThrottle.ThrottleOn();
       landing = true;
-      // rocket.Play();
+      narrator.PlaySound(4); // Play 5Landing
+      rocket.Play();
     } else {
       error.Play();
     }
