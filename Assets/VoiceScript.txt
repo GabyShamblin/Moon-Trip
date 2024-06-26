@@ -1,0 +1,25 @@
+Hello, and welcome to the Virtual Reality Space Training Simulation. Move the red throttle on your left to start takeoff.
+
+[Press button]
+10. 9. 8. 7. 6. 5. 4. 3. 2. 1. Liftoff
+
+[In space, wait 2 secs, turn lights on (scattered)]
+Engaging systems.
+
+[In space, wait 5 secs]
+Move the green throttle on your right to land.
+
+[After fixing, push button]
+Beginning landing sequence.
+
+[After landed]
+Landing complete. You can explore the moon by using the door in the back of the shuttle.
+
+---
+
+[Error sound when trying to open door while not on moon]
+[Door opening sound]
+
+[Ducky sound when interacting with duck]
+
+[Metal sound when wrench hits stuff]
